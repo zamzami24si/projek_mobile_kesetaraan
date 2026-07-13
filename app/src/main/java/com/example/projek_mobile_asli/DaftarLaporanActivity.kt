@@ -18,21 +18,29 @@ class DaftarLaporanActivity : AppCompatActivity() {
     private var rolePengguna = "user"
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_daftar_laporan)
+        try {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_daftar_laporan)
 
-        rolePengguna = intent.getStringExtra("ROLE") ?: "user"
-        database = AppDatabase.getInstance(applicationContext)
+            rolePengguna = intent.getStringExtra("ROLE") ?: "user"
+            database = AppDatabase.getInstance(applicationContext)
 
-        // Setup RecyclerView
-        rvLaporan = findViewById(R.id.rv_laporan)
-        rvLaporan.layoutManager = LinearLayoutManager(this)
+            // Setup RecyclerView
+            rvLaporan = findViewById(R.id.rv_laporan)
+            rvLaporan.layoutManager = LinearLayoutManager(this)
 
-        // Setup Tombol Back
-        val btnBack = findViewById<ImageView>(R.id.btn_back)
-        btnBack.setOnClickListener { finish() }
+            // Setup Tombol Back
+            val btnBack = findViewById<android.view.View>(R.id.btn_back)
+            btnBack.setOnClickListener { finish() }
 
-        loadDataLaporan()
+            loadDataLaporan()
+
+        } catch (e: Exception) {
+            // JIKA CRASH, TANGKAP ERRORNYA DI SINI!
+            android.util.Log.e("CRASH_DAFTAR", "Error: ", e)
+            android.widget.Toast.makeText(this, "CRASH: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+            finish() // Langsung kembalikan ke Dashboard agar aplikasi tidak terlempar ke layar Login
+        }
     }
 
     private fun loadDataLaporan() {

@@ -51,17 +51,27 @@ class LaporanAdapter(
         }
 
         // --- LOGIKA HAK AKSES ADMIN ---
-        if (rolePengguna == "admin") {
+        val role = rolePengguna.lowercase()
+        if (role == "admin") {
+            // ADMIN
             holder.btnHapus.visibility = View.VISIBLE
             holder.btnHapus.setOnClickListener { onDeleteClick(laporan) }
 
-            // Jadikan teks status bisa diklik dan beri ikon pensil
             holder.tvStatus.text = "Status: ${laporan.status} ✏️"
             holder.tvStatus.setOnClickListener { onStatusClick(laporan) }
+
+        } else if (role == "konselor") {
+            // KONSELOR
+            holder.btnHapus.visibility = View.GONE // Tidak ada tombol hapus
+
+            // TAPI bisa klik status
+            holder.tvStatus.text = "Status: ${laporan.status} ✏️"
+            holder.tvStatus.setOnClickListener { onStatusClick(laporan) }
+
         } else {
+            // USER BIASA
             holder.btnHapus.visibility = View.GONE
 
-            // Teks status biasa, tidak bisa diklik
             holder.tvStatus.text = "Status: ${laporan.status}"
             holder.tvStatus.setOnClickListener(null)
         }

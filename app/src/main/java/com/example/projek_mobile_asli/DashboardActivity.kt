@@ -19,15 +19,21 @@ class DashboardActivity : AppCompatActivity() {
         val menuPengaduan = findViewById<LinearLayout>(R.id.menu_pengaduan)
 
         menuPengaduan.setOnClickListener {
-            if (userRole == "admin" || userRole == "konselor") {
-                // Kalau admin/konselor, buka halaman daftar
-                val intent = Intent(this, DaftarLaporanActivity::class.java)
-                intent.putExtra("ROLE", userRole) // Bawa info jabatannya
-                startActivity(intent)
-            } else {
-                // Kalau user biasa, buka halaman bikin laporan
-                val intent = Intent(this, PengaduanActivity::class.java)
-                startActivity(intent)
+            try {
+                if (userRole == "admin" || userRole == "konselor") {
+                    // Kalau admin/konselor, buka halaman daftar laporan
+                    val intent = Intent(this@DashboardActivity, DaftarLaporanActivity::class.java)
+                    intent.putExtra("ROLE", userRole)
+                    startActivity(intent)
+                } else {
+                    // Kalau user biasa, buka halaman form lapor
+                    val intent = Intent(this@DashboardActivity, PengaduanActivity::class.java)
+                    startActivity(intent)
+                }
+            } catch (e: Exception) {
+                // Tangkap error jika terjadi crash!
+                android.widget.Toast.makeText(this@DashboardActivity, "Error Pindah Halaman: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+                android.util.Log.e("DASHBOARD_ERROR", "Gagal pindah halaman", e)
             }
         }
 
