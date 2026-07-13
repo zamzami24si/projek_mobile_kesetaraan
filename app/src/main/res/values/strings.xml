@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">projek_mobile_asli</string>
+    <array name="items_option">
+        <item>Update</item>
+        <item>Hapus</item>
+        <item>Batal</item>
+    </array>
+</resources>

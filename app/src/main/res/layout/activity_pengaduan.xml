@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:id="@+id/header_pengaduan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_top_gradient"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Selamat Datang Di..."
+            android:textColor="#666666"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pengaduan umum"
+            android:textColor="#333333"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_form"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Search"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_search" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_ke_form_laporan"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/header_pengaduan"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#00BCD4"
+        android:text="Tambahkan Laporan"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+
+    <View
+        android:id="@+id/line_separator"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/btn_ke_form_laporan"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:background="#333333" />
+
+    <ImageView
+        android:layout_width="268dp"
+        android:layout_height="270dp"
+        android:layout_centerInParent="true"
+        android:alpha="0.15"
+        android:src="@drawable/logoprojek" /> <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/rv_riwayat_laporan"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/line_separator"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="70dp"
+    android:clipToPadding="false"
+    android:paddingBottom="20dp" />
+
+    <include
+        layout="@layout/layout_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
