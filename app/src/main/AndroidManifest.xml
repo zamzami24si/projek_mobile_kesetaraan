@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projek_mobile_asli">
         <activity
+            android:name=".DetailChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ArtikelActivity"
+            android:exported="false" />
+        <activity
             android:name=".DaftarLaporanActivity"
             android:exported="false" />
         <activity
