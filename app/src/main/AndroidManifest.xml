@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projek_mobile_asli">
         <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfilActivity"
+            android:exported="false" />
+        <activity
             android:name=".NotifikasiActivity"
             android:exported="false" />
         <activity

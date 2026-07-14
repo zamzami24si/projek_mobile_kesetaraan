@@ -10,6 +10,7 @@ import com.example.projek_mobile_asli.data.dao.UserDao
 import com.example.projek_mobile_asli.data.dao.ChatDao
 import com.example.projek_mobile_asli.data.dao.LembagaDao
 import com.example.projek_mobile_asli.data.dao.NotifikasiDao
+import com.example.projek_mobile_asli.data.dao.ProfileDao
 import com.example.projek_mobile_asli.data.entity.Laporan
 import com.example.projek_mobile_asli.data.entity.User
 import com.example.projek_mobile_asli.data.entity.Admin
@@ -19,8 +20,9 @@ import com.example.projek_mobile_asli.data.entity.Konsultasi
 import com.example.projek_mobile_asli.data.entity.PesanChat
 import com.example.projek_mobile_asli.data.entity.LembagaBantuan
 import com.example.projek_mobile_asli.data.entity.NotifikasiItem
+import com.example.projek_mobile_asli.data.entity.UserProfile
 
-@Database(entities = [User::class, NotifikasiItem::class, LembagaBantuan::class, Laporan::class, Admin::class, PesanChat::class, Konsultasi::class, Konselor::class, Artikel::class], version = 9)
+@Database(entities = [User::class, UserProfile::class, NotifikasiItem::class, LembagaBantuan::class, Laporan::class, Admin::class, PesanChat::class, Konsultasi::class, Konselor::class, Artikel::class], version = 10)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun laporanDao(): LaporanDao
@@ -32,6 +34,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun lembagaDao(): LembagaDao
 
     abstract fun notifikasiDao(): NotifikasiDao
+
+    abstract fun profileDao(): ProfileDao
 
 
     companion object {

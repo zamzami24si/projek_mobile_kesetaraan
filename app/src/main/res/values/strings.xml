@@ -5,4 +5,7 @@
         <item>Hapus</item>
         <item>Batal</item>
     </array>
+    <string name="nama_profil">Nama Profil</string>
+    <string name="edit_profil">Edit Profil</string>
+    <string name="logout">Logout</string>
 </resources>

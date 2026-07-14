@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="luxury_gold">#C5A059</color>
+    <color name="luxury_navy">#1A237E</color>
+    <color name="luxury_bg">#F8F9FA</color>
+    <color name="luxury_card">#FFFFFF</color>
 </resources>

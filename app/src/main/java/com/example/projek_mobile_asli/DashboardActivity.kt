@@ -6,137 +6,95 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projek_mobile_asli.data.AppDatabase
+import com.example.projek_mobile_asli.data.entity.Konsultasi
 
 class DashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        // Menerima data "ROLE" yang dikirim dari halaman Login
+        // 1. Ambil data ROLE yang konsisten
         val userRole = intent.getStringExtra("ROLE") ?: "user"
+        Toast.makeText(this, "Login sebagai: $userRole", Toast.LENGTH_SHORT).show()
 
-        // Panggil menu pengaduan dari XML
+        // 2. Setup Navbar (Sudah otomatis membawa userRole)
+        BottomNavHelper.setupBottomNavigation(this, userRole)
+
+        // 3. Inisialisasi Menu-menu Dashboard
         val menuPengaduan = findViewById<LinearLayout>(R.id.menu_pengaduan)
+        val menuNotifikasi = findViewById<LinearLayout>(R.id.menu_notifikasi)
+        val menuProfil = findViewById<LinearLayout>(R.id.menu_profile)
+        val menuChat = findViewById<LinearLayout>(R.id.menu_chat)
+        val menuArtikel = findViewById<LinearLayout>(R.id.menu_artikel)
+        val menuLembaga = findViewById<LinearLayout>(R.id.menu_lembaga)
 
+        // LOGIKA VISIBILITAS (Admin tidak bisa akses chat)
+        if (userRole == "admin") {
+            menuChat.visibility = View.GONE
+        } else {
+            menuChat.visibility = View.VISIBLE
+        }
+
+        // 4. Set Klik Listener
         menuPengaduan.setOnClickListener {
-            try {
-                if (userRole == "admin" || userRole == "konselor") {
-                    // Kalau admin/konselor, buka halaman daftar laporan
-                    val intent = Intent(this@DashboardActivity, DaftarLaporanActivity::class.java)
-                    intent.putExtra("ROLE", userRole)
-                    startActivity(intent)
-                } else {
-                    // Kalau user biasa, buka halaman form lapor
-                    val intent = Intent(this@DashboardActivity, PengaduanActivity::class.java)
-                    startActivity(intent)
-                }
-            } catch (e: Exception) {
-                // Tangkap error jika terjadi crash!
-                android.widget.Toast.makeText(this@DashboardActivity, "Error Pindah Halaman: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
-                android.util.Log.e("DASHBOARD_ERROR", "Gagal pindah halaman", e)
+            if (userRole == "admin" || userRole == "konselor") {
+                val intent = Intent(this, DaftarLaporanActivity::class.java)
+                intent.putExtra("ROLE", userRole)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, PengaduanActivity::class.java)
+                intent.putExtra("ROLE", userRole)
+                startActivity(intent)
             }
         }
 
-        // MENGAKTIFKAN MENU NOTIFIKASI DI DASHBOARD
-        val menuNotifikasi = findViewById<android.widget.LinearLayout>(R.id.menu_notifikasi)
-
         menuNotifikasi.setOnClickListener {
-            val intent = android.content.Intent(this@DashboardActivity, NotifikasiActivity::class.java)
-            // Selipkan ROLE agar halaman Notifikasi tahu siapa yang sedang membukanya
+            val intent = Intent(this, NotifikasiActivity::class.java)
             intent.putExtra("ROLE", userRole)
             startActivity(intent)
         }
 
-        val menuChat = findViewById<LinearLayout>(R.id.menu_chat)
+        menuProfil.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra("ROLE", userRole) // <--- INI PENTING AGAR ROLE TIDAK HILANG
+            startActivity(intent)
+        }
 
         menuChat.setOnClickListener {
-            val role = userRole.lowercase()
-
-            if (role == "admin") {
-                // 1. ADMIN DITOLAK
-                android.widget.Toast.makeText(this, "Fitur Chat hanya untuk User & Konselor!", android.widget.Toast.LENGTH_SHORT).show()
-
-            } else if (role == "konselor") {
-                // 2. KONSELOR -> Ke Halaman Daftar Chat
-                val intent = Intent(this@DashboardActivity, ChatActivity::class.java)
-                startActivity(intent)
-
+            if (userRole == "konselor") {
+                startActivity(Intent(this, ChatActivity::class.java))
             } else {
-                // 3. USER -> Langsung masuk ke Ruang Obrolan
-                // Kita gunakan Thread karena harus mencari/membuat ID obrolan di Database dulu
+                // User biasa
                 Thread {
-                    val db = com.example.projek_mobile_asli.data.AppDatabase.getInstance(this@DashboardActivity)
-
-                    // Nama default user (bisa kamu ganti dengan variabel nama akun yang login jika ada)
+                    val db = AppDatabase.getInstance(this)
                     val namaUser = "Pengguna (Pasien)"
-
-                    // Cek apakah user ini sudah pernah chat?
                     val riwayatChat = db.chatDao().searchKonsultasi(namaUser)
-                    val idKonsultasi: Long
-
-                    if (riwayatChat.isNotEmpty()) {
-                        // Kalau sudah ada, ambil ID-nya
-                        idKonsultasi = riwayatChat[0].id
+                    val idKonsultasi = if (riwayatChat.isNotEmpty()) {
+                        riwayatChat[0].id
                     } else {
-                        // Kalau belum ada, buatkan ruang chat baru secara otomatis!
-                        val sesiBaru = com.example.projek_mobile_asli.data.entity.Konsultasi(
-                            namaPengguna = namaUser,
-                            pesanTerakhir = "Belum ada pesan",
-                            waktuTerakhir = "",
-                            online = true
-                        )
-                        idKonsultasi = db.chatDao().insertKonsultasi(sesiBaru)
+                        db.chatDao().insertKonsultasi(Konsultasi(namaPengguna = namaUser, pesanTerakhir = "Belum ada pesan", waktuTerakhir = "", online = true))
                     }
-
                     runOnUiThread {
-                        val intent = Intent(this@DashboardActivity, DetailChatActivity::class.java)
-                        // Bawa ID obrolan dan Jabatannya
+                        val intent = Intent(this, DetailChatActivity::class.java)
                         intent.putExtra("EXTRA_ID", idKonsultasi)
-                        intent.putExtra("ROLE", role)
+                        intent.putExtra("ROLE", userRole)
                         startActivity(intent)
                     }
                 }.start()
             }
         }
 
-        val menuArtikel = findViewById<LinearLayout>(R.id.menu_artikel)
-
         menuArtikel.setOnClickListener {
-            try {
-                val intent = Intent(this@DashboardActivity, ArtikelActivity::class.java)
-
-                // BARIS INI SANGAT PENTING AGAR ARTIKELACTIVITY TAHU JABATANNYA!
-                intent.putExtra("ROLE", userRole)
-
-                startActivity(intent)
-            } catch (e: Exception) {
-                android.widget.Toast.makeText(this@DashboardActivity, "Error Buka Artikel: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
-            }
-        }
-
-        // Panggil elemen menu konsultasi dari XML
-        val menuKonsultasi = findViewById<LinearLayout>(R.id.menu_chat)
-
-        // Tampilkan pesan sapaan sesuai role
-        Toast.makeText(this, "Login sebagai: $userRole", Toast.LENGTH_SHORT).show()
-
-        // LOGIKA UTAMA: Sembunyikan menu Konsultasi jika yang login adalah admin
-        if (userRole == "admin") {
-            menuKonsultasi.visibility = View.GONE
-            // View.GONE akan menghilangkan elemen 100% dan membuat ruangnya terisi oleh elemen di bawahnya
-        } else {
-            menuKonsultasi.visibility = View.VISIBLE
-        }
-
-        val menuLembaga = findViewById<LinearLayout>(R.id.menu_lembaga)
-        menuLembaga.setOnClickListener {
-            val intent = Intent(this, LembagaBantuanActivity::class.java)
-            intent.putExtra("ROLE", userRole) // Penting agar halaman tahu siapa yang buka
+            val intent = Intent(this, ArtikelActivity::class.java)
+            intent.putExtra("ROLE", userRole)
             startActivity(intent)
         }
 
-        // Aktifkan fungsi klik navigasi dari class helper
-        // Panggil helper navigasi dan kirimkan peran/jabatan yang sedang login
-        BottomNavHelper.setupBottomNavigation(this, userRole)
+        menuLembaga.setOnClickListener {
+            val intent = Intent(this, LembagaBantuanActivity::class.java)
+            intent.putExtra("ROLE", userRole)
+            startActivity(intent)
+        }
     }
 }
