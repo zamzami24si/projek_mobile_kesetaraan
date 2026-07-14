@@ -8,6 +8,7 @@ import com.example.projek_mobile_asli.data.dao.ArtikelDao
 import com.example.projek_mobile_asli.data.dao.LaporanDao
 import com.example.projek_mobile_asli.data.dao.UserDao
 import com.example.projek_mobile_asli.data.dao.ChatDao
+import com.example.projek_mobile_asli.data.dao.LembagaDao
 import com.example.projek_mobile_asli.data.entity.Laporan
 import com.example.projek_mobile_asli.data.entity.User
 import com.example.projek_mobile_asli.data.entity.Admin
@@ -15,8 +16,9 @@ import com.example.projek_mobile_asli.data.entity.Konselor
 import com.example.projek_mobile_asli.data.entity.Artikel
 import com.example.projek_mobile_asli.data.entity.Konsultasi
 import com.example.projek_mobile_asli.data.entity.PesanChat
+import com.example.projek_mobile_asli.data.entity.LembagaBantuan
 
-@Database(entities = [User::class, Laporan::class, Admin::class, PesanChat::class, Konsultasi::class, Konselor::class, Artikel::class], version = 7)
+@Database(entities = [User::class, LembagaBantuan::class, Laporan::class, Admin::class, PesanChat::class, Konsultasi::class, Konselor::class, Artikel::class], version = 8)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun laporanDao(): LaporanDao
@@ -24,6 +26,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun artikelDao(): ArtikelDao
 
     abstract fun chatDao(): ChatDao
+
+    abstract fun lembagaDao(): LembagaDao
 
     companion object {
         @Volatile

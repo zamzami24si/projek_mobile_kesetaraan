@@ -118,6 +118,13 @@ class DashboardActivity : AppCompatActivity() {
             menuKonsultasi.visibility = View.VISIBLE
         }
 
+        val menuLembaga = findViewById<LinearLayout>(R.id.menu_lembaga)
+        menuLembaga.setOnClickListener {
+            val intent = Intent(this, LembagaBantuanActivity::class.java)
+            intent.putExtra("ROLE", userRole) // Penting agar halaman tahu siapa yang buka
+            startActivity(intent)
+        }
+
         // Aktifkan fungsi klik navigasi dari class helper
         BottomNavHelper.setupBottomNavigation(this)
     }

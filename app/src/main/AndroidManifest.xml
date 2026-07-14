@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projek_mobile_asli">
         <activity
+            android:name=".LembagaBantuanActivity"
+            android:exported="false" />
+        <activity
             android:name=".DetailChatActivity"
             android:exported="false" />
         <activity
