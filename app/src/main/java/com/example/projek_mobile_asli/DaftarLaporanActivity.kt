@@ -35,6 +35,8 @@ class DaftarLaporanActivity : AppCompatActivity() {
 
             loadDataLaporan()
 
+            BottomNavHelper.setupBottomNavigation(this, rolePengguna)
+
         } catch (e: Exception) {
             // JIKA CRASH, TANGKAP ERRORNYA DI SINI!
             android.util.Log.e("CRASH_DAFTAR", "Error: ", e)
@@ -56,6 +58,8 @@ class DaftarLaporanActivity : AppCompatActivity() {
                 )
                 rvLaporan.adapter = adapter
             }
+
+
         }.start()
     }
 

@@ -72,6 +72,19 @@ class LaporanActivity : AppCompatActivity() {
                     )
                     database.laporanDao().insertLaporan(laporanBaru)
 
+                    // ==========================================
+                    // INI DIA PELATUK NOTIFIKASINYA (POINT 3)
+                    // ==========================================
+                    database.notifikasiDao().insert(
+                        com.example.projek_mobile_asli.data.entity.NotifikasiItem(
+                            judul = "Laporan Pengaduan Baru",
+                            isi = "Ada pengaduan baru dengan judul '$judul' masuk ke dalam sistem.",
+                            waktu = "Baru saja",
+                            rolePenerima = "semua" // "semua" berarti Admin, Konselor, dan User akan dapat notifnya
+                        )
+                    )
+                    // ==========================================
+
                     runOnUiThread {
                         Toast.makeText(this, "Laporan berhasil dikirim!", Toast.LENGTH_SHORT).show()
                         finish()

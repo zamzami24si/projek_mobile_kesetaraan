@@ -78,20 +78,23 @@
         android:layout_height="270dp"
         android:layout_centerInParent="true"
         android:alpha="0.15"
-        android:src="@drawable/logoprojek" /> <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rv_riwayat_laporan"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@id/line_separator"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="70dp"
-    android:clipToPadding="false"
-    android:paddingBottom="20dp" />
+        android:src="@drawable/logoprojek" />
 
     <include
+        android:id="@+id/navbar_bawah"
         layout="@layout/layout_bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_riwayat_laporan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/line_separator"
+        android:layout_above="@id/navbar_bawah"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp" />
 
 </RelativeLayout>

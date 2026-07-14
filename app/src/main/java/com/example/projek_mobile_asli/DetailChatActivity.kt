@@ -125,6 +125,17 @@ class DetailChatActivity : AppCompatActivity() {
                 )
             )
 
+            val penerimaNotif = if (role == "user") "konselor" else "user"
+
+            db.notifikasiDao().insert(
+                com.example.projek_mobile_asli.data.entity.NotifikasiItem(
+                    judul = "Pesan Baru",
+                    isi = "Ada pesan masuk berbunyi: '$isi'",
+                    waktu = waktuSekarang,
+                    rolePenerima = penerimaNotif // <-- Jika user yg kirim, notif masuk ke Konselor, dan sebaliknya!
+                )
+            )
+
             // 2. Update waktu dan isi pesan terakhir di daftar depan
             val diperbarui = data.copy(pesanTerakhir = isi, waktuTerakhir = waktuSekarang, belumDibaca = 0)
             db.chatDao().updateKonsultasi(diperbarui)

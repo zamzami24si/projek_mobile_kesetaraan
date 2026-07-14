@@ -37,6 +37,16 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
 
+        // MENGAKTIFKAN MENU NOTIFIKASI DI DASHBOARD
+        val menuNotifikasi = findViewById<android.widget.LinearLayout>(R.id.menu_notifikasi)
+
+        menuNotifikasi.setOnClickListener {
+            val intent = android.content.Intent(this@DashboardActivity, NotifikasiActivity::class.java)
+            // Selipkan ROLE agar halaman Notifikasi tahu siapa yang sedang membukanya
+            intent.putExtra("ROLE", userRole)
+            startActivity(intent)
+        }
+
         val menuChat = findViewById<LinearLayout>(R.id.menu_chat)
 
         menuChat.setOnClickListener {
@@ -126,6 +136,7 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         // Aktifkan fungsi klik navigasi dari class helper
-        BottomNavHelper.setupBottomNavigation(this)
+        // Panggil helper navigasi dan kirimkan peran/jabatan yang sedang login
+        BottomNavHelper.setupBottomNavigation(this, userRole)
     }
 }

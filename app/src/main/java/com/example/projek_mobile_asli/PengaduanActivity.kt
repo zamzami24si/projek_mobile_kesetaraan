@@ -19,8 +19,6 @@ class PengaduanActivity : AppCompatActivity() {
         setContentView(R.layout.activity_pengaduan)
 
         // Aktifkan Navigasi Bawah
-        // Pastikan class BottomNavHelper kamu sudah siap
-        // BottomNavHelper.setupBottomNavigation(this)
 
         database = AppDatabase.getInstance(applicationContext)
         rvRiwayat = findViewById(R.id.rv_riwayat_laporan)
@@ -30,6 +28,8 @@ class PengaduanActivity : AppCompatActivity() {
         btnTambahLaporan.setOnClickListener {
             startActivity(Intent(this, LaporanActivity::class.java))
         }
+        // Pastikan variabel role-nya sesuai
+        BottomNavHelper.setupBottomNavigation(this, "user")
     }
 
     // onResume berjalan setiap kali halaman ini tampil di layar

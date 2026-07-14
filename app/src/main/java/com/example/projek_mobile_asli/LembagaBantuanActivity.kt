@@ -98,6 +98,14 @@ class LembagaBantuanActivity : AppCompatActivity() {
                             gambarUri = stringGambar
                         )
                     )
+                    db.notifikasiDao().insert(
+                        com.example.projek_mobile_asli.data.entity.NotifikasiItem(
+                            judul = "Lembaga Baru Ditambahkan!",
+                            isi = "Kontak lembaga '$nama' telah berhasil ditambahkan ke dalam daftar.",
+                            waktu = "Baru saja",
+                            rolePenerima = "semua" // <-- Semua orang (User, Admin, Konselor) akan dapat notif ini!
+                        )
+                    )
                     runOnUiThread { muatLembaga() }
                 }.start()
             }
