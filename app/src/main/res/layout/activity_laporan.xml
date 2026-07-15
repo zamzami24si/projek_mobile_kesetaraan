@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Form Pengaduan"
+        android:textColor="#333333"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ceritakan masalah yang Anda alami secara detail."
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Judul Laporan"
+        android:textColor="#333333"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/et_judul_laporan"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:hint="Contoh: Pelecehan di tempat kerja"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Detail Laporan"
+        android:textColor="#333333"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/et_deskripsi_laporan"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#FFFFFF"
+        android:hint="Tuliskan kronologi kejadian di sini..."
+        android:gravity="top|start"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Foto Bukti (Opsional)"
+        android:textColor="#333333"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btn_upload_foto"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Pilih Foto"
+            android:backgroundTint="#9E9E9E"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_nama_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Belum ada foto dipilih"
+            android:textColor="#666666"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_preview_foto"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <CheckBox
+        android:id="@+id/cb_anonim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kirim sebagai Anonim (Sembunyikan identitas)"
+        android:textColor="#D32F2F"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btn_kirim_laporan"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:backgroundTint="#2DD4BF"
+        android:text="KIRIM LAPORAN"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:elevation="4dp"/>
+
+</LinearLayout>

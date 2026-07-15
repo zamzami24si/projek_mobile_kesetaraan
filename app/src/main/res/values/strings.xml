@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">projek_mobile_asli</string>
+    <array name="items_option">
+        <item>Update</item>
+        <item>Hapus</item>
+        <item>Batal</item>
+    </array>
+    <string name="nama_profil">Nama Profil</string>
+    <string name="edit_profil">Edit Profil</string>
+    <string name="logout">Logout</string>
+</resources>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <!-- Kontainer utama dengan efek klik bergelombang rapi -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="14dp">
+
+        <!-- KIRI: Area Avatar Bulat + Dot Online Bulat -->
+        <RelativeLayout
+            android:id="@+id/layoutAvatar"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginEnd="14dp">
+
+            <!-- Avatar Lingkaran (Menggunakan Trik CardView setengah ukuran) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvAvatarKonsultasi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="26dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:id="@+id/tvAvatarKonsultasi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#E5E7EB"
+                    android:gravity="center"
+                    android:text="A"
+                    android:textColor="#4E69FF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Titik Hijau Online Bulat Sempurna -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dotOnlineContainer"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                app:cardBackgroundColor="#4CAF50"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="2dp"
+                android:visibility="visible"> <!-- Ubah ke gone via kode jika offline -->
+                <View
+                    android:id="@+id/dotOnline"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <!-- KANAN: Waktu & Badge Jumlah Pesan Belum Terbaca -->
+        <LinearLayout
+            android:id="@+id/layoutKanan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvWaktuKonsultasi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10:00"
+                android:textColor="#999999"
+                android:textSize="12sp" />
+
+            <!-- Badge Unread Bulat Berwarna Merah Menyala -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvBadgeUnread"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="#F44336"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                android:visibility="visible"> <!-- Set ke gone lewat adapter jika 0 -->
+
+                <TextView
+                    android:id="@+id/tvBadgeUnread"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- TENGAH: Nama Pengguna & Isi Potongan Pesan Terakhir -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/layoutKanan"
+            android:layout_toEndOf="@id/layoutAvatar"
+            android:orientation="vertical"
+            android:paddingEnd="12dp">
+
+            <TextView
+                android:id="@+id/tvNamaKonsultasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Nama Pengguna"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPesanTerakhir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Pesan terakhir tampil di sini..."
+                android:textColor="#666666"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
