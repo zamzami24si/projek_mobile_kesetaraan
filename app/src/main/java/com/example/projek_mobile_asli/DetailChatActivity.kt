@@ -20,6 +20,10 @@ class DetailChatActivity : AppCompatActivity() {
     private lateinit var adapter: PesanChatAdapter
     private var konsultasi: Konsultasi? = null
 
+    // Variabel penampung data dari Dashboard
+    private var rolePengguna: String = "user"
+    private var namaPengirimAktif: String = "Pengguna"
+
     // Komponen UI
     private lateinit var rvPesan: RecyclerView
     private lateinit var etPesan: EditText
@@ -32,6 +36,10 @@ class DetailChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail_chat)
 
         db = AppDatabase.getInstance(this)
+
+        // 1. Tangkap data dari Intent (Dikirim dari Dashboard)
+        rolePengguna = intent.getStringExtra("ROLE") ?: "user"
+        namaPengirimAktif = intent.getStringExtra("EXTRA_NAMA_PENGIRIM") ?: "Pengguna"
 
         // Hubungkan dengan ID di XML
         rvPesan = findViewById(R.id.rvPesan)
@@ -56,11 +64,9 @@ class DetailChatActivity : AppCompatActivity() {
     }
 
     private fun muatKonsultasi() {
-        // Ambil ID dari ChatActivity
         val id = intent.getLongExtra("EXTRA_ID", -1L)
 
         Thread {
-            // Ambil data dari Room (ChatDao)
             val data = db.chatDao().getKonsultasiById(id)
 
             runOnUiThread {
@@ -73,9 +79,7 @@ class DetailChatActivity : AppCompatActivity() {
                 konsultasi = data
                 tvNamaDetailChat.text = data.namaPengguna
 
-                // Ambil huruf pertama untuk foto profil (Avatar)
                 tvAvatarDetailChat.text = if (data.namaPengguna.isNotEmpty()) data.namaPengguna.take(1).uppercase() else "?"
-
                 tvStatusDetailChat.text = if (data.online) "Online" else "Offline"
 
                 muatPesan()
@@ -87,17 +91,13 @@ class DetailChatActivity : AppCompatActivity() {
         val id = konsultasi?.id ?: return
 
         Thread {
-            // 1. daftarPesan dibuat di dalam Thread
             val daftarPesan = db.chatDao().getPesanByKonsultasi(id)
 
-            // 2. runOnUiThread WAJIB berada di dalam kurung kurawal Thread
-            // agar bisa membaca daftarPesan di atasnya
             runOnUiThread {
-                adapter.updateData(daftarPesan) // Baris 91
+                adapter.updateData(daftarPesan)
 
-                // Gulir otomatis ke pesan paling bawah (terbaru)
-                if (daftarPesan.isNotEmpty()) { // Baris 93
-                    rvPesan.scrollToPosition(daftarPesan.size - 1) // Baris 94
+                if (daftarPesan.isNotEmpty()) {
+                    rvPesan.scrollToPosition(daftarPesan.size - 1)
                 }
             }
         }.start()
@@ -108,40 +108,54 @@ class DetailChatActivity : AppCompatActivity() {
         val isi = etPesan.text.toString().trim()
         if (isi.isEmpty()) return
 
-        val waktuSekarang = SimpleDateFormat("HH:mm", java.util.Locale.getDefault()).format(java.util.Date())
+        val waktuSekarang = SimpleDateFormat("HH:mm", Locale.getDefault()).format(java.util.Date())
 
-        // Cek siapa yang masuk ke ruangan ini dari Intent
-        val role = intent.getStringExtra("ROLE") ?: "user"
-        val tipePengirim = if (role.lowercase() == "konselor") PesanChat.PENGIRIM_KONSELOR else PesanChat.PENGIRIM_USER
+        // 2. Tentukan posisi bubble chat (Kiri/Kanan) menggunakan konstanta bawaanmu
+        val tipePengirim = if (rolePengguna.lowercase() == "konselor") PesanChat.PENGIRIM_KONSELOR else PesanChat.PENGIRIM_USER
+
+        // 3. Tentukan nama asli yang akan muncul
+        val namaYangTertera = if (rolePengguna.lowercase() == "konselor") "Konselor" else namaPengirimAktif
 
         Thread {
-            // 1. Simpan pesan dengan pengirim yang sesuai (User/Konselor)
+            // Simpan pesan ke database
             db.chatDao().insertPesan(
                 PesanChat(
                     konsultasiId = data.id,
                     isiPesan = isi,
                     waktu = waktuSekarang,
-                    pengirim = tipePengirim // <-- INI YANG BERUBAH
+                    pengirim = tipePengirim // Tetap pakai ini agar adapter gelembung chat tidak rusak
                 )
             )
 
-            val penerimaNotif = if (role == "user") "konselor" else "user"
+            // 4. Kirim Notifikasi dengan menyertakan NAMA PENGIRIM
+            val penerimaNotif = if (rolePengguna == "user") "konselor" else "user"
 
             db.notifikasiDao().insert(
                 com.example.projek_mobile_asli.data.entity.NotifikasiItem(
-                    judul = "Pesan Baru",
-                    isi = "Ada pesan masuk berbunyi: '$isi'",
+                    judul = "Pesan Baru dari $namaYangTertera", // <-- NAMA MUNCUL DI SINI!
+                    isi = isi,
                     waktu = waktuSekarang,
-                    rolePenerima = penerimaNotif // <-- Jika user yg kirim, notif masuk ke Konselor, dan sebaliknya!
+                    rolePenerima = penerimaNotif
                 )
             )
 
-            // 2. Update waktu dan isi pesan terakhir di daftar depan
-            val diperbarui = data.copy(pesanTerakhir = isi, waktuTerakhir = waktuSekarang, belumDibaca = 0)
+            // Update waktu, isi pesan terakhir, dan memastikan namaPengguna ter-update dengan nama asli
+            val namaTerupdate = if (rolePengguna == "user") namaYangTertera else data.namaPengguna
+
+            val diperbarui = data.copy(
+                namaPengguna = namaTerupdate, // <-- Memperbarui nama ruang obrolan dengan nama asli
+                pesanTerakhir = isi,
+                waktuTerakhir = waktuSekarang,
+                belumDibaca = 0
+            )
             db.chatDao().updateKonsultasi(diperbarui)
 
             runOnUiThread {
                 konsultasi = diperbarui
+                // Update tampilan header (opsional jika ingin nama langsung berubah saat itu juga)
+                tvNamaDetailChat.text = namaTerupdate
+                tvAvatarDetailChat.text = if (namaTerupdate.isNotEmpty()) namaTerupdate.take(1).uppercase() else "?"
+
                 etPesan.setText("")
                 muatPesan()
             }

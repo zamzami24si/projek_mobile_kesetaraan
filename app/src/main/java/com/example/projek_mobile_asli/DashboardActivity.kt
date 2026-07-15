@@ -63,22 +63,44 @@ class DashboardActivity : AppCompatActivity() {
 
         menuChat.setOnClickListener {
             if (userRole == "konselor") {
-                startActivity(Intent(this, ChatActivity::class.java))
+                // Konselor -> Ke Halaman Daftar Chat
+                val intent = Intent(this@DashboardActivity, ChatActivity::class.java)
+                intent.putExtra("ROLE", userRole)
+                startActivity(intent)
             } else {
-                // User biasa
+                // User -> Ambil nama asli dari Database terlebih dahulu
                 Thread {
-                    val db = AppDatabase.getInstance(this)
-                    val namaUser = "Pengguna (Pasien)"
+                    val db = AppDatabase.getInstance(this@DashboardActivity)
+
+                    // 1. AMBIL NAMA ASLI DARI DATABASE PROFIL
+                    val profile = db.profileDao().getProfile()
+                    val namaUser = profile?.nama ?: "Pengguna" // Jika nama kosong, pakai "Pengguna"
+
+                    // Cek riwayat chat berdasarkan nama asli
                     val riwayatChat = db.chatDao().searchKonsultasi(namaUser)
-                    val idKonsultasi = if (riwayatChat.isNotEmpty()) {
-                        riwayatChat[0].id
+                    val idKonsultasi: Long
+
+                    if (riwayatChat.isNotEmpty()) {
+                        idKonsultasi = riwayatChat[0].id
                     } else {
-                        db.chatDao().insertKonsultasi(Konsultasi(namaPengguna = namaUser, pesanTerakhir = "Belum ada pesan", waktuTerakhir = "", online = true))
+                        // Buat sesi konsultasi baru dengan nama asli user
+                        val sesiBaru = Konsultasi(
+                            namaPengguna = namaUser,
+                            pesanTerakhir = "Belum ada pesan",
+                            waktuTerakhir = "",
+                            online = true
+                        )
+                        idKonsultasi = db.chatDao().insertKonsultasi(sesiBaru)
                     }
+
                     runOnUiThread {
-                        val intent = Intent(this, DetailChatActivity::class.java)
+                        val intent = Intent(this@DashboardActivity, DetailChatActivity::class.java)
                         intent.putExtra("EXTRA_ID", idKonsultasi)
                         intent.putExtra("ROLE", userRole)
+
+                        // 2. KIRIM NAMA PENGIRIM KE DETAIL CHAT
+                        intent.putExtra("EXTRA_NAMA_PENGIRIM", namaUser)
+
                         startActivity(intent)
                     }
                 }.start()
