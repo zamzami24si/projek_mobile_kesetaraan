@@ -13,7 +13,6 @@
     android:paddingHorizontal="8dp"
     android:weightSum="4">
 
-    <!-- Tombol HOME -->
     <LinearLayout
         android:id="@+id/nav_home"
         android:layout_width="0dp"
@@ -38,7 +37,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Tombol PROFIL -->
     <LinearLayout
         android:id="@+id/nav_profil"
         android:layout_width="0dp"
@@ -51,7 +49,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:srcCompat="@drawable/profilenav" />
+            app:srcCompat="@drawable/profilenavq" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -63,7 +61,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Tombol NOTIFIKASI -->
     <LinearLayout
         android:id="@+id/nav_notifikasi"
         android:layout_width="0dp"
@@ -88,7 +85,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Tombol MENU -->
     <LinearLayout
         android:id="@+id/nav_menu"
         android:layout_width="0dp"

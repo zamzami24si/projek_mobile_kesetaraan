@@ -86,7 +86,8 @@ class EditProfilActivity : AppCompatActivity() {
                     } else {
                         // Pasang gambar default awal jika di DB belum ada file kustom
                         if (userRole.lowercase() == "admin") {
-                            ivAvatarEdit.setImageResource(R.drawable.profilenav)
+                            // PERBAIKAN DI SINI: ganti profilenav menjadi profilenavq
+                            ivAvatarEdit.setImageResource(R.drawable.profilenavq)
                         } else {
                             ivAvatarEdit.setImageResource(R.drawable.ic_user)
                         }
@@ -98,7 +99,8 @@ class EditProfilActivity : AppCompatActivity() {
                     etNama.setText(userRole.replaceFirstChar { it.uppercase() })
                     etEmail.setText(userRole.lowercase() + "@setaraku.com")
                     if (userRole.lowercase() == "admin") {
-                        ivAvatarEdit.setImageResource(R.drawable.profilenav)
+                        // PERBAIKAN DI SINI: ganti profilenav menjadi profilenavq
+                        ivAvatarEdit.setImageResource(R.drawable.profilenavq)
                     } else {
                         ivAvatarEdit.setImageResource(R.drawable.ic_user)
                     }

@@ -112,7 +112,8 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setDefaultAvatar() {
         if (userRole.lowercase() == "admin") {
-            imgFotoProfil.setImageResource(R.drawable.profilenav)
+            // PERBAIKAN DI SINI: profilenav menjadi profilenavq
+            imgFotoProfil.setImageResource(R.drawable.profilenavq)
         } else {
             imgFotoProfil.setImageResource(R.drawable.ic_user)
         }

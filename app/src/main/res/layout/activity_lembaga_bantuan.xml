@@ -16,9 +16,12 @@
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="11dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             android:src="@android:drawable/ic_menu_revert"
             app:tint="#FFFFFF" />
 
