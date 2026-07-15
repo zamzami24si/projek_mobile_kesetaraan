@@ -38,174 +38,182 @@
             android:paddingHorizontal="16dp" />
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Diubah menggunakan ScrollView agar menu tidak terpotong di layar HP kecil dan diset di atas navbar -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/header_layout"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="70dp"
-        android:paddingHorizontal="16dp">
+        android:layout_above="@+id/dashboard_bottom_nav">
 
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flow_menu"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="menu_pengaduan,menu_lembaga,menu_profile,menu_artikel,menu_notifikasi,menu_chat"
-            app:flow_horizontalGap="16dp"
-            app:flow_maxElementsWrap="2"
-            app:flow_verticalGap="16dp"
-            app:flow_wrapMode="aligned"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:paddingHorizontal="16dp">
 
-        <LinearLayout
-            android:id="@+id/menu_pengaduan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_form"
-            android:elevation="4dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:srcCompat="@drawable/pengaduan" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_menu"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Pengaduan"
-                android:textColor="#333333"
-                android:textStyle="bold" />
-        </LinearLayout>
+                app:constraint_referenced_ids="menu_pengaduan,menu_lembaga,menu_profile,menu_artikel,menu_notifikasi,menu_chat"
+                app:flow_horizontalGap="16dp"
+                app:flow_maxElementsWrap="2"
+                app:flow_verticalGap="16dp"
+                app:flow_wrapMode="aligned"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/menu_lembaga"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_form"
-            android:elevation="4dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:srcCompat="@drawable/lembaga" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/menu_pengaduan"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Lembaga"
-                android:textColor="#333333"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:background="@drawable/bg_form"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/menu_profile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_form"
-            android:elevation="4dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="16dp">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:srcCompat="@drawable/pengaduan" />
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:srcCompat="@drawable/profile" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Pengaduan"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/menu_lembaga"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Profile"
-                android:textColor="#333333"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:background="@drawable/bg_form"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/menu_artikel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_form"
-            android:elevation="4dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="16dp">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:srcCompat="@drawable/lembaga" />
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:srcCompat="@drawable/artikel" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Lembaga"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/menu_profile"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Artikel"
-                android:textColor="#333333"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:background="@drawable/bg_form"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/menu_notifikasi"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_form"
-            android:elevation="4dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="16dp">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:srcCompat="@drawable/profile" />
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:srcCompat="@drawable/notifikasi" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Profile"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/menu_artikel"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Notifikasi"
-                android:textColor="#333333"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:background="@drawable/bg_form"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/menu_chat"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_form"
-            android:elevation="4dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="16dp">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:srcCompat="@drawable/artikel" />
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:srcCompat="@drawable/konsultasi" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Artikel"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/menu_notifikasi"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Konsultasi"
-                android:textColor="#333333"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:background="@drawable/bg_form"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:srcCompat="@drawable/notifikasi" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Notifikasi"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_chat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_form"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:srcCompat="@drawable/konsultasi" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Konsultasi"
+                    android:textColor="#333333"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <include
+        android:id="@+id/dashboard_bottom_nav"
         layout="@layout/layout_bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -11,6 +11,7 @@ interface ProfileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(profile: UserProfile)
 
-    @Query("SELECT * FROM user_profile WHERE id = 1 LIMIT 1")
-    fun getProfile(): UserProfile?
+    // Kita ubah pencariannya dinamis menggunakan pencarian ID unik berdasarkan kode hash peran akun
+    @Query("SELECT * FROM user_profile WHERE id = :profileId LIMIT 1")
+    fun getProfileById(profileId: Int): UserProfile?
 }

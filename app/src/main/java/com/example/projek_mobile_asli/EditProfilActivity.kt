@@ -25,7 +25,10 @@ class EditProfilActivity : AppCompatActivity() {
     private lateinit var etBio: EditText
     private lateinit var ivAvatarEdit: ImageView
 
-    // Peluncur Galeri & Penyimpan Foto ke Internal HP (Kode dari temanmu, ini sangat bagus!)
+    private var userRole: String = "user"
+    private var uniqueProfileId: Int = 1
+
+    // Peluncur Galeri & Penyimpan Foto ke Internal HP
     private val pilihGambarLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
             val path = simpanFotoKeInternal(uri)
@@ -42,22 +45,34 @@ class EditProfilActivity : AppCompatActivity() {
 
         db = AppDatabase.getInstance(this)
 
+        // 1. Tangkap parameter ROLE login untuk menentukan ID unik Kamar Database
+        userRole = intent.getStringExtra("ROLE") ?: "user"
+        uniqueProfileId = when (userRole.lowercase()) {
+            "admin" -> 100    // Kamar simpan Admin
+            "konselor" -> 200 // Kamar simpan Konselor
+            else -> 300       // Kamar simpan User biasa
+        }
+
+        // 2. Inisialisasi komponen UI dari XML
         etNama = findViewById(R.id.etNama)
         etEmail = findViewById(R.id.etEmail)
         etNoHp = findViewById(R.id.etNoHp)
         etBio = findViewById(R.id.etBio)
         ivAvatarEdit = findViewById(R.id.ivAvatarEdit)
 
+        // 3. Set OnClickListener Tombol Aksi
         findViewById<ImageView>(R.id.btnBackEdit).setOnClickListener { finish() }
         findViewById<Button>(R.id.btnUbahFoto).setOnClickListener { pilihGambarLauncher.launch("image/*") }
         findViewById<Button>(R.id.btnSimpanProfil).setOnClickListener { simpanProfil() }
 
+        // 4. Muat data lama dari database agar form tidak kosong saat dibuka
         muatDataLama()
     }
 
     private fun muatDataLama() {
         Thread {
-            val profile = db.profileDao().getProfile()
+            // Memanggil getProfileById menyesuaikan ID unik kamarnya masing-masing
+            val profile = db.profileDao().getProfileById(uniqueProfileId)
             if (profile != null) {
                 runOnUiThread {
                     etNama.setText(profile.nama)
@@ -68,6 +83,24 @@ class EditProfilActivity : AppCompatActivity() {
                     fotoPathTerpilih = profile.fotoPath
                     if (!profile.fotoPath.isNullOrEmpty() && File(profile.fotoPath).exists()) {
                         ivAvatarEdit.setImageURI(Uri.fromFile(File(profile.fotoPath)))
+                    } else {
+                        // Pasang gambar default awal jika di DB belum ada file kustom
+                        if (userRole.lowercase() == "admin") {
+                            ivAvatarEdit.setImageResource(R.drawable.profilenav)
+                        } else {
+                            ivAvatarEdit.setImageResource(R.drawable.ic_user)
+                        }
+                    }
+                }
+            } else {
+                // Set isi awal berdasarkan role jika datanya benar-benar kosong baru mendaftar
+                runOnUiThread {
+                    etNama.setText(userRole.replaceFirstChar { it.uppercase() })
+                    etEmail.setText(userRole.lowercase() + "@setaraku.com")
+                    if (userRole.lowercase() == "admin") {
+                        ivAvatarEdit.setImageResource(R.drawable.profilenav)
+                    } else {
+                        ivAvatarEdit.setImageResource(R.drawable.ic_user)
                     }
                 }
             }
@@ -77,7 +110,11 @@ class EditProfilActivity : AppCompatActivity() {
     private fun simpanFotoKeInternal(sourceUri: Uri): String? {
         return try {
             val inputStream = contentResolver.openInputStream(sourceUri) ?: return null
-            val fileTujuan = File(filesDir, "foto_profil.jpg")
+
+            // Nama file kita buat unik per-akun agar file foto tidak saling menimpa satu sama lain
+            val namaFileFoto = "foto_profil_" + userRole.lowercase() + ".jpg"
+            val fileTujuan = File(filesDir, namaFileFoto)
+
             FileOutputStream(fileTujuan).use { output -> inputStream.copyTo(output) }
             inputStream.close()
             fileTujuan.absolutePath
@@ -99,9 +136,19 @@ class EditProfilActivity : AppCompatActivity() {
         }
 
         Thread {
-            db.profileDao().save(
-                UserProfile(nama = nama, email = email, noHp = noHp, bio = bio, fotoPath = fotoPathTerpilih)
+            // Memasukkan data UserProfile baru secara runtut sesuai urutan constructor entity
+            val profilBaru = UserProfile(
+                uniqueProfileId,
+                nama,
+                email,
+                noHp,
+                bio,
+                fotoPathTerpilih
             )
+
+            // Simpan ke database
+            db.profileDao().save(profilBaru)
+
             runOnUiThread {
                 Toast.makeText(this, "Profil berhasil diperbarui", Toast.LENGTH_SHORT).show()
                 finish()
